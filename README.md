@@ -1,5 +1,19 @@
 # Iglesia Web
 
+## Deploy to Vercel
+
+Import `will931012/jueChurchWeb` at https://vercel.com/new and use:
+
+- Root Directory: `frontend`
+- Framework Preset: `Vite`
+- Build Command: `npm run build`
+- Output Directory: `dist`
+
+Deploy the `main` branch. The `frontend/vercel.json` configuration supports
+direct visits and refreshes on routes such as `/es`, `/en`, and `/es/visita`.
+This deploys the frontend; its current pages do not require the Express backend.
+Vercel provides an HTTPS URL after deployment.
+
 Estructura inicial separada para crecer de forma ordenada:
 
 - `frontend/`: React + Vite + Tailwind CSS
