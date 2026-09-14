@@ -36,28 +36,26 @@ export const siteContent = {
     topBar: {
       leftLabel: "Iglesia",
       leftTitle: "Jesucristo Unica Esperanza",
-      leftText: "12415 SW 136 Ave Miami FL USA",
-      rightTitle: "Bible in One Year",
-      rightText: "Saber mas"
+      leftText: "12415 SW 136 Ave Miami FL USA"
     },
     utilityLinks: [
       { key: "friendsFamily", label: "Conecta" },
       { key: "conference", label: "Eventos" },
       { key: "ministry", label: "Ministerio" },
       { key: "resources", label: "Recursos" },
-      { key: "worship", label: "Adoracion" }
+      { key: "worship", label: "Adoración" }
     ],
     ctas: {
-      information: "Informacion",
+      information: "Información",
       login: "Login",
-      menu: "Menu",
+      menu: "Menú",
       switchLocale: "English"
     },
     navItems: [
       { key: "visit", label: "Visita" },
       { key: "sermons", label: "Sermones" },
       { key: "groups", label: "Grupos" },
-      { key: "vision", label: "Vision" },
+      { key: "vision", label: "Visión" },
       { key: "give", label: "Ofrendar" }
     ],
     home: {
@@ -73,7 +71,7 @@ export const siteContent = {
       heroEyebrow: "Bienvenidos",
       heroTitle: "Una iglesia cercana, viva y con proposito.",
       heroText:
-        "Ya dejamos la estructura en una tecnologia moderna para que el siguiente paso sea llevar el diseno hacia la pagina de referencia que me compartas, sin rehacer la base.",
+        "Un lugar para conocer a Jesús, crecer en la fe y compartir la vida en comunidad. Te esperamos en Miami; hay un lugar para ti y tu familia.",
       primaryAction: "Planifica tu visita",
       secondaryAction: "Ver eventos",
       sermonMeta: {
@@ -697,9 +695,7 @@ export const siteContent = {
     topBar: {
       leftLabel: "Church",
       leftTitle: "Jesus Christ Only Hope",
-      leftText: "12415 SW 136 Ave Miami FL USA",
-      rightTitle: "Bible in One Year",
-      rightText: "Learn More"
+      leftText: "12415 SW 136 Ave Miami FL USA"
     },
     utilityLinks: [
       { key: "friendsFamily", label: "Connect" },
@@ -734,7 +730,7 @@ export const siteContent = {
       heroEyebrow: "Welcome",
       heroTitle: "A church that feels close, alive, and full of purpose.",
       heroText:
-        "The structure is already set on a modern stack, so the next step is shaping the design around the reference site you share without rebuilding the foundation.",
+        "A place to know Jesus, grow in faith, and share life together. Join us in Miami; there is a place for you and your family.",
       primaryAction: "Plan your visit",
       secondaryAction: "See events",
       sermonMeta: {

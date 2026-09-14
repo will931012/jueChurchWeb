@@ -1,168 +1,86 @@
-import { Link } from "react-router-dom";
-import { motion, useScroll, useSpring } from "motion/react";
+﻿import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { getLocalizedPath } from "../content/siteContent";
 
 function Header({ locale, currentPageKey, content }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButton = useRef(null);
+  const location = useLocation();
   const altLocale = locale === "es" ? "en" : "es";
-  const { scrollYProgress } = useScroll();
-  const progressScale = useSpring(scrollYProgress, {
-    stiffness: 140,
-    damping: 24,
-    mass: 0.2
-  });
+  const closeLabel = locale === "es" ? "Cerrar menú" : "Close menu";
+  const menuItems = [...content.navItems, ...content.utilityLinks,
+    { key: "information", label: content.ctas.information },
+    { key: "login", label: content.ctas.login }];
+
+  useEffect(() => { setMenuOpen(false); }, [location.pathname]);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuButton.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [menuOpen]);
+
+  const navLink = (item, compact = false) => (
+    <Link key={item.key} to={getLocalizedPath(locale, item.key)}
+      onClick={() => setMenuOpen(false)}
+      aria-current={currentPageKey === item.key ? "page" : undefined}
+      className={`${compact ? "px-3 py-2 text-sm" : "rounded-xl px-4 py-3 text-sm"} font-semibold transition-colors ${currentPageKey === item.key ? "bg-black/[0.06] text-black" : "text-black/65 hover:bg-black/[0.04] hover:text-black"}`}>
+      {item.label}
+    </Link>
+  );
 
   return (
     <header className="sticky top-0 z-30 border-b border-black/10 bg-white/95 backdrop-blur-xl">
-      <motion.div
-        className="absolute left-0 top-0 h-1 w-full origin-left bg-black"
-        style={{ scaleX: progressScale }}
-      />
-      <div className="bg-black text-white">
-        <div className="mx-auto flex min-h-[74px] w-[min(1320px,calc(100%-1.5rem))] items-center justify-between gap-6">
-          <motion.div
-            className="flex-1 text-center md:text-left"
-            initial={{ opacity: 0, y: -18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-white/75">
-              {content.topBar.leftLabel}
-            </p>
-            <p className="mt-1 text-xl font-extrabold leading-none">{content.topBar.leftTitle}</p>
-            <p className="mt-1 text-sm text-white/75">{content.topBar.leftText}</p>
-          </motion.div>
-          <motion.div
-            className="hidden flex-1 text-center md:block"
-            initial={{ opacity: 0, y: -18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <p className="text-xl font-extrabold leading-none">{content.topBar.rightTitle}</p>
-            <p className="mt-1 text-sm text-white/75">{content.topBar.rightText}</p>
-          </motion.div>
+      <div className="bg-[#181818] text-white">
+        <div className="mx-auto flex min-h-10 max-w-[1280px] items-center justify-between gap-4 px-4 sm:px-6">
+          <p className="text-[10px] font-medium tracking-wide sm:text-xs">{content.topBar.leftText}</p>
+          <Link to={getLocalizedPath(altLocale, currentPageKey)} lang={altLocale}
+            aria-label={locale === "es" ? "Read this page in English" : "Leer esta página en español"}
+            className="inline-flex min-h-10 shrink-0 items-center gap-2 text-xs font-semibold text-white/90 transition hover:text-white">
+            {content.ctas.switchLocale}<span aria-hidden="true">↗</span>
+          </Link>
         </div>
       </div>
-
-      <div className="border-b border-black/10 bg-white">
-        <div className="mx-auto flex min-h-[62px] w-[min(1320px,calc(100%-1.5rem))] items-center justify-between gap-6">
-          <div className="hidden items-center gap-8 lg:flex">
-            {content.utilityLinks.map((item) => (
-              <motion.div key={item.key} whileHover={{ y: -2 }} transition={{ duration: 0.18 }}>
-                <Link
-                  to={getLocalizedPath(locale, item.key)}
-                  className="text-sm font-black uppercase tracking-[0.08em] text-black transition hover:text-black/60"
-                >
-                  {item.label}
-                </Link>
-              </motion.div>
-            ))}
+      <div className="mx-auto flex min-h-[88px] max-w-[1280px] items-center justify-between gap-3 px-4 sm:px-6 lg:min-h-[100px]">
+        <Link to={getLocalizedPath(locale, "home")} onClick={() => setMenuOpen(false)}
+          className="flex min-w-0 items-center gap-3 py-3">
+          <img src="/church-logo.jpg" alt="" width="56" height="56"
+            className="h-11 w-11 shrink-0 rounded-full border border-black/10 object-cover sm:h-14 sm:w-14" />
+          <span className="max-w-[210px] text-sm font-extrabold uppercase leading-snug tracking-[0.04em] sm:text-base">{content.siteName}</span>
+        </Link>
+        <nav aria-label={locale === "es" ? "Navegación principal" : "Main navigation"}
+          className="hidden items-center gap-1 xl:flex">
+          {content.navItems.map((item) => navLink(item))}
+        </nav>
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <Link to={getLocalizedPath(locale, "visit")}
+            className="hidden rounded-full bg-black px-5 py-3 text-sm font-bold text-white transition hover:bg-black/80 md:inline-flex">
+            {content.home.primaryAction}
+          </Link>
+          <button ref={menuButton} type="button" aria-expanded={menuOpen} aria-controls="site-menu"
+            aria-label={menuOpen ? closeLabel : content.ctas.menu}
+            onClick={() => setMenuOpen((open) => !open)}
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-black/15 px-3 transition hover:bg-black/5 sm:px-4">
+            <span className="hidden text-xs font-bold sm:inline">{menuOpen ? closeLabel : content.ctas.menu}</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+              <path d={menuOpen ? "M6 6l12 12M6 18L18 6" : "M4 8h16M4 16h16"} />
+            </svg>
+          </button>
+        </div>
+      </div>
+      {menuOpen && (
+        <nav id="site-menu" aria-label={locale === "es" ? "Todas las páginas" : "All pages"}
+          className="max-h-[calc(100dvh-140px)] overflow-y-auto border-t border-black/10 bg-white">
+          <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-2 px-4 py-5 sm:grid-cols-3 sm:px-6 lg:grid-cols-4">
+            {menuItems.map((item) => navLink(item))}
           </div>
-
-          <div className="ml-auto flex items-center gap-4">
-            <motion.div whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Link
-                  to={getLocalizedPath(locale, "information")}
-                  className="rounded-sm border border-black/20 px-5 py-3 text-sm font-bold text-black transition hover:border-black/40"
-                >
-                {content.ctas.information}
-              </Link>
-            </motion.div>
-            <motion.div whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Link
-                  to={getLocalizedPath(locale, "login")}
-                  className="rounded-sm border border-black/20 px-5 py-3 text-sm font-bold text-black transition hover:border-black/40"
-                >
-                {content.ctas.login}
-              </Link>
-            </motion.div>
-            <motion.div whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Link
-                  to={getLocalizedPath(altLocale, currentPageKey)}
-                  className="rounded-sm border border-black/20 px-4 py-3 text-sm font-black text-black transition hover:border-black/40"
-                >
-                {content.ctas.switchLocale}
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white">
-        <div className="mx-auto grid min-h-[112px] w-[min(1320px,calc(100%-1.5rem))] items-center gap-6 lg:grid-cols-[1fr_auto_1fr]">
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Link to={getLocalizedPath(locale, "home")} className="flex items-center gap-4">
-              <motion.img
-                src="/church-logo.jpg"
-                alt={content.siteName}
-                className="h-14 w-14 rounded-full border border-black/10 object-cover md:h-16 md:w-16"
-                whileHover={{ scale: 1.04 }}
-                transition={{ duration: 0.2 }}
-              />
-              <motion.div
-                className="max-w-[260px] text-xl font-black uppercase leading-none tracking-[0.08em] text-black md:text-2xl"
-                whileHover={{ x: 4 }}
-                transition={{ duration: 0.2 }}
-              >
-                {content.siteName}
-              </motion.div>
-            </Link>
-          </motion.div>
-
-          <motion.nav
-            className="hidden items-center justify-center border-x border-black/10 bg-white px-10 py-10 lg:flex"
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="flex items-center gap-10">
-              {content.navItems.map((item) => (
-                <motion.div
-                  key={item.key}
-                  whileHover={{ y: -3 }}
-                  transition={{ duration: 0.18 }}
-                >
-                  <Link
-                    to={getLocalizedPath(locale, item.key)}
-                    className="text-[15px] font-extrabold text-black transition hover:text-black/60"
-                  >
-                    {item.label}
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </motion.nav>
-
-          <motion.div
-            className="flex items-center justify-end gap-4"
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <span className="text-sm uppercase tracking-[0.22em] text-black/80">{content.ctas.menu}</span>
-            <motion.div
-              className="flex w-8 flex-col gap-1.5"
-              whileHover="hovered"
-              initial="rest"
-              animate="rest"
-            >
-              <motion.span
-                className="ml-auto block h-1 w-8 bg-black"
-                variants={{ rest: { width: 32 }, hovered: { width: 20 } }}
-                transition={{ duration: 0.2 }}
-              />
-              <motion.span
-                className="ml-auto block h-1 w-5 bg-black"
-                variants={{ rest: { width: 20 }, hovered: { width: 32 } }}
-                transition={{ duration: 0.2 }}
-              />
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
+        </nav>
+      )}
     </header>
   );
 }

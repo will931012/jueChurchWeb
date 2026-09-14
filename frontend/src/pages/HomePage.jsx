@@ -27,7 +27,7 @@ function HomePage() {
                   {home.featuredVideo.date}
                 </div>
               </div>
-              <h1 className="mt-7 max-w-[10ch] font-sans text-[clamp(4.2rem,10vw,8.4rem)] font-semibold leading-[0.88] tracking-[-0.085em] text-black">
+              <h1 className="mt-7 max-w-[10ch] font-sans text-[clamp(3rem,8vw,6.5rem)] font-semibold leading-[0.98] tracking-[-0.055em] text-black">
                 {home.featuredVideo.title}
               </h1>
             </div>
@@ -91,16 +91,16 @@ function HomePage() {
                 <div className="mt-7 flex flex-wrap gap-3">
                   <motion.div whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                     <Link
-                      to={getLocalizedPath(locale, "information")}
-                      className="rounded-full bg-black px-6 py-3 text-sm font-bold text-white transition hover:opacity-90"
+                      to={getLocalizedPath(locale, "visit")}
+                      className="inline-flex rounded-full bg-black px-6 py-3 text-sm font-bold text-white transition hover:opacity-90"
                     >
                       {home.primaryAction}
                     </Link>
                   </motion.div>
                   <motion.div whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                     <Link
-                      to={getLocalizedPath(locale, "sermons")}
-                      className="rounded-full border border-black/10 bg-white px-6 py-3 text-sm font-bold text-black transition hover:border-black/20"
+                      to={getLocalizedPath(locale, "conference")}
+                      className="inline-flex rounded-full border border-black/10 bg-white px-6 py-3 text-sm font-bold text-black transition hover:border-black/20"
                     >
                       {home.secondaryAction}
                     </Link>
@@ -123,7 +123,7 @@ function HomePage() {
                   <div className="mt-6 grid gap-3 border-t border-black/10 pt-5 sm:grid-cols-2">
                     <div>
                       <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.28em] text-black/42">
-                        Speaker
+                        {locale === "es" ? "Predicador" : "Speaker"}
                       </p>
                       <p className="mt-2 text-sm font-semibold text-black/72">
                         {home.featuredVideo.speaker}
@@ -131,7 +131,7 @@ function HomePage() {
                     </div>
                     <div>
                       <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.28em] text-black/42">
-                        Date
+                        {locale === "es" ? "Fecha" : "Date"}
                       </p>
                       <p className="mt-2 text-sm font-semibold text-black/72">
                         {home.featuredVideo.date}
@@ -173,25 +173,25 @@ function HomePage() {
             <p className="mb-3 text-xs font-extrabold uppercase tracking-[0.35em] text-black/55">
               {home.heroEyebrow}
             </p>
-            <h1 className="max-w-[10ch] font-display text-5xl leading-[0.94] md:text-7xl">
+            <h2 className="max-w-[14ch] font-display text-4xl leading-tight md:text-6xl">
               {home.heroTitle}
-            </h1>
+            </h2>
             <p className="mt-6 max-w-2xl text-base leading-8 text-black/65 md:text-lg">
               {home.heroText}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <motion.div whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Link
-                  to={getLocalizedPath(locale, "information")}
-                  className="rounded-full bg-black px-6 py-3 text-sm font-bold text-white transition hover:opacity-90"
+                  to={getLocalizedPath(locale, "visit")}
+                  className="inline-flex rounded-full bg-black px-6 py-3 text-sm font-bold text-white transition hover:opacity-90"
                 >
                   {home.primaryAction}
                 </Link>
               </motion.div>
               <motion.div whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Link
-                  to={getLocalizedPath(locale, "sermons")}
-                  className="rounded-full border border-black/10 bg-white px-6 py-3 text-sm font-bold text-black transition hover:border-black/20"
+                  to={getLocalizedPath(locale, "conference")}
+                  className="inline-flex rounded-full border border-black/10 bg-white px-6 py-3 text-sm font-bold text-black transition hover:border-black/20"
                 >
                   {home.secondaryAction}
                 </Link>
@@ -250,7 +250,7 @@ function HomePage() {
               <p className="text-base leading-8 text-black/65">{home.visit.text}</p>
               <motion.div whileHover={{ x: 4 }} transition={{ duration: 0.2 }}>
                 <Link
-                  to={getLocalizedPath(locale, "information")}
+                  to={getLocalizedPath(locale, "visit")}
                   className="mt-5 inline-flex items-center gap-3 text-sm font-black uppercase tracking-[0.16em] text-black"
                 >
                   {home.visit.action}
